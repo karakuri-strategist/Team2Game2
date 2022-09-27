@@ -6,6 +6,7 @@ public class MimicEnemy : MonoBehaviour
 {
     private new Animation animation;
     private new Rigidbody rigidbody;
+    public int lives = 2;
     public FirstPersonLook playerLook;
     
     public GameObject player;
@@ -33,8 +34,26 @@ public class MimicEnemy : MonoBehaviour
             rigidbody.rotation = Quaternion.LookRotation(velocity);
         }
         if (playerMovement.IsMoving)
+        {
             animation.Play("Idle");
+            rigidbody.velocity = Vector3.zero;
+
+        }
         else
+        {
             animation.Play("Walk");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Fireball")
+        {
+            lives -= 1;
+            if(lives <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 }
